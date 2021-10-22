@@ -1,13 +1,6 @@
-pub mod character;
 pub mod srd;
 
-pub use character::{Character, Race, Class};
-
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
-pub enum Size { Fine, Diminutive, Tiny, Small, Medium, Large, Huge, Gargantuan, Colossal }
-
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
-pub enum Proficiency { None, Proficient, Expert }
+pub use crate::character::{Character, Race, Class, Background};
 
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
 pub enum DamageType {
@@ -37,16 +30,4 @@ pub enum Conditions {
     Surprised,
     Unconscious,
     Exhaustion,
-}
-
-impl Default for Size {
-    fn default() -> Self {
-        Self::Medium
-    }
-}
-
-impl Default for Proficiency {
-    fn default() -> Self {
-        Self::None
-    }
 }

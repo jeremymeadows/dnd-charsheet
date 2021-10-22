@@ -2,6 +2,8 @@
 
 pub mod races;
 pub mod classes;
+pub mod backgrounds;
 
-pub use races::get_races;
-pub use classes::get_classes;
+pub use races::*;
+pub use classes::*;
+pub use backgrounds::*;

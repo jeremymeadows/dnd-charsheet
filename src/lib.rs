@@ -1,11 +1,15 @@
+#![feature(once_cell)]
 #![forbid(unsafe_code)]
 // #![cfg_attr(not(debug_assertions), deny(warnings))] // Forbid warnings in release builds
 #![warn(clippy::all)]
 
 mod app;
+pub mod character;
 pub mod compendium;
+// pub mod widgets;
 
-pub use app::App;
+pub use app::{App, Mode};
+pub use character::Character;
 
 // When compiling for web:
 #[cfg(target_arch = "wasm32")]
