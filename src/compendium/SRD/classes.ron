@@ -1,20 +1,4 @@
-use std::lazy::SyncLazy;
-use ron;
-use crate::compendium::Class;
-
-static CLASSES: SyncLazy<Vec<Class>> = SyncLazy::new(|| {
-    ron::from_str::<Vec<Class>>(SRD_CLASSES).unwrap()
-});
-
-pub fn get_classes() -> Vec<Class> {
-    CLASSES.to_vec()
-}
-
-pub fn get_class(name: &str) -> Option<Class> {
-    CLASSES.iter().find(|e| e.name == name).cloned()
-}
-
-static SRD_CLASSES: &str = r#"[
+[
 Class(
     name: "test",
     hit_die: 20,
@@ -1736,4 +1720,4 @@ Class(
         },
     },
 ),
-]"#;
+]

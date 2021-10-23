@@ -1,15 +1,24 @@
-pub mod srd;
-
-pub use crate::character::{Character, Race, Class, Background};
+pub mod backgrounds;
+pub mod classes;
+pub mod feats;
+pub mod items;
+pub mod races;
 
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
 pub enum DamageType {
-    Bludgeoning, Piercing, Slashing,
-    Acid, Poison,
-    Cold, Fire,
-    Force, Psychic,
-    Lightning, Thunder,
-    Necrotic, Radiant,
+    Bludgeoning,
+    Piercing,
+    Slashing,
+    Acid,
+    Poison,
+    Cold,
+    Fire,
+    Force,
+    Psychic,
+    Lightning,
+    Thunder,
+    Necrotic,
+    Radiant,
 }
 
 #[derive(Debug, serde::Deserialize, serde::Serialize)]

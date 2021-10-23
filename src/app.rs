@@ -1,7 +1,7 @@
+use crate::character::{self, Ability, Character, Skill};
+use crate::compendium::{backgrounds, classes, races};
 use eframe::{egui, epi};
-use crate::compendium::srd;
 // use crate::widgets;
-use crate::{character::Proficiency, Character};
 
 /// We derive Deserialize/Serialize so we can persist app state on shutdown.
 #[derive(serde::Deserialize, serde::Serialize)]
@@ -16,8 +16,13 @@ pub struct App {
     pub tmp: Character,
 }
 
-#[derive(serde::Deserialize, serde::Serialize)]
-pub enum Mode { Display, New, Edit, Save }
+#[derive(PartialEq, serde::Deserialize, serde::Serialize)]
+pub enum Mode {
+    Display,
+    New,
+    Edit,
+    Save,
+}
 
 impl Default for App {
     fn default() -> Self {
@@ -56,7 +61,12 @@ impl epi::App for App {
     /// Called each time the UI needs repainting, which may be many times per second.
     /// Put your widgets into a `SidePanel`, `TopPanel`, `CentralPanel`, `Window` or `Area`.
     fn update(&mut self, ctx: &egui::CtxRef, frame: &mut epi::Frame<'_>) {
-        let Self { character, mode, dirty: _, tmp } = self;
+        let Self {
+            character,
+            mode,
+            dirty: _,
+            tmp,
+        } = self;
 
         // Examples of how to create different panels and windows.
         // Pick whichever suits you.
@@ -79,16 +89,16 @@ impl epi::App for App {
                         }
                         if ui.button("Save").clicked() {
                             std::fs::write(
-                                format!("{}_the_{}_{}.charsheet",
-                                    character.name,
-                                    character.race.name,
-                                    character.class.name
+                                format!(
+                                    "{}_the_{}_{}.charsheet",
+                                    character.name, character.race.name, character.class.name
                                 ),
-                                ron::to_string(&character).unwrap()
-                            ).expect("failed to write to file");
+                                ron::to_string(&character).unwrap(),
+                            )
+                            .expect("failed to write to file");
                         }
                         if ui.button("Load").clicked() {
-                            //*mode = Mode::New;
+                            // *mode = Mode::Load;
                         }
                         if character.level < 20 {
                             if ui.button("Level Up").clicked() {
@@ -116,9 +126,17 @@ impl epi::App for App {
                     }
                     Mode::New | Mode::Edit => {
                         if ui.button("Done").clicked() {
-                            character.race = srd::get_race(&character.race.name).unwrap();
-                            character.class = srd::get_class(&character.class.name).unwrap();
-                            character.background = srd::get_background(&character.background.name).unwrap();
+                            character.race = races::get_race(&character.race.name).unwrap();
+                            character.class = classes::get_class(&character.class.name).unwrap();
+                            character.background =
+                                backgrounds::get_background(&character.background.name).unwrap();
+
+                            if *mode == Mode::New {
+                                character.max_hp = (character.class.hit_die as i8
+                                    + character.ability_mod(Ability::Constitution))
+                                    as u16;
+                                character.hp = character.max_hp as i16;
+                            }
                             *mode = Mode::Display;
                         }
                         if ui.button("Cancel").clicked() {
@@ -145,97 +163,102 @@ impl epi::App for App {
                         ui.label(format!("{} {}", character.class.name, character.level));
                     });
                     ui.label(&character.background.name);
-                    ui.heading(format!("+{}", &character.proficiency_bonus()));
+
+                    ui.separator();
 
                     ui.horizontal(|ui| {
-                        fn ab(title: &str, value: u8, ui: &mut egui::Ui) {
-                            ui.vertical(|ui| {
-                                ui.set_width(64.0);
+                        ui.vertical(|ui| {
+                            ui.set_width(80.0);
+                            let ab = |ability: Ability, ui: &mut egui::Ui| {
                                 ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
-                                    ui.heading(title);
-                                    ui.label(format!("{}{}",
-                                        if value > 9 { "+" } else { "" },
-                                        Character::calc_mod(value))
+                                    ui.label(ability.to_string());
+                                    ui.heading(character::mod_str(character.ability_mod(ability)));
+                                    ui.label(character.ability_score(ability).to_string());
+                                });
+                            };
+
+                            ab(Ability::Strength, ui);
+                            ab(Ability::Dexterity, ui);
+                            ab(Ability::Constitution, ui);
+                            ab(Ability::Intelligence, ui);
+                            ab(Ability::Wisdom, ui);
+                            ab(Ability::Charisma, ui);
+                        });
+
+                        ui.vertical(|ui| {
+                            ui.set_width(176.0);
+                            ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
+                                ui.label("Proficiency Bonus".to_string());
+                                ui.heading(format!("+{}", &character.proficiency_bonus()));
+                                ui.label("".to_string());
+                            });
+                            let sk = |skill: Skill, ui: &mut egui::Ui| {
+                                ui.horizontal(|ui| {
+                                    ui.label(character.skill_level(skill).icon());
+                                    ui.label(character::mod_str(character.skill_mod(skill)));
+                                    ui.label(skill.to_string());
+                                    ui.label(format!("({})", skill.attr().to_string_short()));
+                                });
+                            };
+
+                            ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
+                                sk(Skill::Acrobatics, ui);
+                                sk(Skill::AnimalHandling, ui);
+                                sk(Skill::Arcana, ui);
+                                sk(Skill::Athletics, ui);
+                                sk(Skill::Deception, ui);
+                                sk(Skill::History, ui);
+                                sk(Skill::Insight, ui);
+                                sk(Skill::Intimidation, ui);
+                                sk(Skill::Investigation, ui);
+                                sk(Skill::Medicine, ui);
+                                sk(Skill::Nature, ui);
+                                sk(Skill::Perception, ui);
+                                sk(Skill::Performance, ui);
+                                sk(Skill::Persuasion, ui);
+                                sk(Skill::Religion, ui);
+                                sk(Skill::SleightOfHand, ui);
+                                sk(Skill::Stealth, ui);
+                                sk(Skill::Survival, ui);
+                            });
+                        });
+                        ui.vertical(|ui| {
+                            ui.set_width(240.0);
+                            ui.horizontal(|ui| {
+                                ui.vertical(|ui| {
+                                    ui.set_width(80.0);
+                                    ui.with_layout(
+                                        egui::Layout::top_down(egui::Align::Center),
+                                        |ui| {
+                                            ui.label("Armor Class".to_string());
+                                            ui.heading(character.ac().to_string());
+                                        },
                                     );
-                                    ui.label(value.to_string());
+                                });
+                                ui.vertical(|ui| {
+                                    ui.set_width(80.0);
+                                    ui.with_layout(
+                                        egui::Layout::top_down(egui::Align::Center),
+                                        |ui| {
+                                            ui.label("Initiative".to_string());
+                                            ui.heading(character::mod_str(
+                                                character.ability_mod(Ability::Dexterity),
+                                            ));
+                                        },
+                                    );
+                                });
+                                ui.vertical(|ui| {
+                                    ui.set_width(80.0);
+                                    ui.with_layout(
+                                        egui::Layout::top_down(egui::Align::Center),
+                                        |ui| {
+                                            ui.label("Speed".to_string());
+                                            ui.heading(character.speed().to_string());
+                                        },
+                                    );
                                 });
                             });
-                        }
-
-                        ab("STR", character.abilities().strength, ui);
-                        ab("DEX", character.abilities().dexterity, ui);
-                        ab("CON", character.abilities().constitution, ui);
-                        ab("INT", character.abilities().intelligence, ui);
-                        ab("WIS", character.abilities().wisdom, ui);
-                        ab("CHA", character.abilities().charisma, ui);
-                    });
-
-                    ui.vertical(|ui| {
-                        let sk = |title: &str, ability: u8, value: Proficiency, ui: &mut egui::Ui| {
-                            let pb = character.proficiency_bonus() as i8;
-
-                            ui.horizontal(|ui| {
-                                let mut bonus = Character::calc_mod(ability);
-                                let icon;
-
-                                match value {
-                                    Proficiency::None => {
-                                        icon = "○";
-                                    }
-                                    Proficiency::Proficient => {
-                                        icon = "⏺";
-                                        bonus += pb;
-                                    }
-                                    Proficiency::Expert => {
-                                        icon = "★";
-                                        bonus += pb * 2;
-                                    }
-                                }
-                                ui.label(icon);
-                                ui.label(title);
-                                ui.label(format!("{}{}",
-                                    if ability > 9 { "+" } else { "" },
-                                    bonus
-                                ));
-                            });
-                        };
-
-                        sk("Acrobatics", character.abilities().dexterity,
-                            character.skills().acrobatics, ui);
-                        sk("Animal Handling", character.abilities().wisdom,
-                            character.skills().animal_handling, ui);
-                        sk("Arcana", character.abilities().intelligence,
-                            character.skills().arcana, ui);
-                        sk("Athletics", character.abilities().strength,
-                            character.skills().athletics, ui);
-                        sk("Deception", character.abilities().charisma,
-                            character.skills().deception, ui);
-                        sk("History", character.abilities().intelligence,
-                            character.skills().history, ui);
-                        sk("Insight", character.abilities().wisdom,
-                            character.skills().insight, ui);
-                        sk("Intimidation", character.abilities().charisma,
-                            character.skills().intimidation, ui);
-                        sk("Investigation", character.abilities().intelligence,
-                            character.skills().investigation, ui);
-                        sk("Medicine", character.abilities().wisdom,
-                            character.skills().medicine, ui);
-                        sk("Nature", character.abilities().intelligence,
-                            character.skills().nature, ui);
-                        sk("Perception", character.abilities().wisdom,
-                            character.skills().perception, ui);
-                        sk("Performance", character.abilities().charisma,
-                            character.skills().performance, ui);
-                        sk("Persuision", character.abilities().charisma,
-                            character.skills().persuasion, ui);
-                        sk("Religion", character.abilities().intelligence,
-                            character.skills().religion, ui);
-                        sk("Sleight of Hand", character.abilities().dexterity,
-                            character.skills().sleight_of_hand, ui);
-                        sk("Stealth", character.abilities().dexterity,
-                            character.skills().stealth, ui);
-                        sk("Survival", character.abilities().wisdom,
-                            character.skills().survival, ui);
+                        });
                     });
                 }
                 Mode::New => {
@@ -243,51 +266,80 @@ impl epi::App for App {
                     ui.text_edit_singleline(&mut character.gender);
 
                     egui::ComboBox::from_id_source("race")
+                        .width(256.0)
                         .selected_text(&character.race.name)
                         .show_ui(ui, |ui| {
-                            for i in srd::get_races().iter().map(|e| e.name.clone()) {
-                                ui.selectable_value(&mut character.race.name, i.clone(), i);
-                            }
-                        }
-                    );
-                    ui.horizontal(|ui| {
-                        egui::ComboBox::from_id_source("class")
-                            .selected_text(&character.class.name)
-                            .show_ui(ui, |ui| {
-                                for i in srd::get_classes().iter().map(|e| e.name.clone()) {
-                                    ui.selectable_value(&mut character.class.name, i.clone(), i);
+                            for race in races::get_races().iter() {
+                                match &race.subraces {
+                                    Some(subraces) => {
+                                        ui.label(&race.name);
+                                        for subrace in subraces {
+                                            ui.selectable_value(
+                                                &mut character.race.name,
+                                                subrace.name.clone(),
+                                                // format!("{}|{}", race.name, subrace.name),
+                                                format!("  {}", subrace.name),
+                                            );
+                                        }
+                                    }
+                                    None => {
+                                        ui.selectable_value(
+                                            &mut character.race.name,
+                                            race.name.clone(),
+                                            race.name.clone(),
+                                        );
+                                    }
                                 }
                             }
-                        );
+                        });
+                    ui.horizontal(|ui| {
+                        egui::ComboBox::from_id_source("class")
+                            .width(256.0)
+                            .selected_text(&character.class.name)
+                            .show_ui(ui, |ui| {
+                                for i in classes::get_classes().iter().map(|e| e.name.clone()) {
+                                    ui.selectable_value(&mut character.class.name, i.clone(), i);
+                                }
+                            });
                     });
                     ui.horizontal(|ui| {
                         egui::ComboBox::from_id_source("background")
+                            .width(256.0)
                             .selected_text(&character.background.name)
                             .show_ui(ui, |ui| {
-                                for i in srd::get_backgrounds().iter().map(|e| e.name.clone()) {
-                                    ui.selectable_value(&mut character.background.name, i.clone(), i);
+                                for i in backgrounds::get_backgrounds()
+                                    .iter()
+                                    .map(|e| e.name.clone())
+                                {
+                                    ui.selectable_value(
+                                        &mut character.background.name,
+                                        i.clone(),
+                                        i,
+                                    );
                                 }
-                            }
-                        );
+                            });
                     });
                     ui.horizontal(|ui| {
-                        fn ab(title: &str, value: &mut u8, ui: &mut egui::Ui) {
+                        let mut ab = |ability: Ability, ui: &mut egui::Ui| {
                             ui.vertical(|ui| {
                                 ui.set_width(64.0);
                                 ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
-                                    ui.heading(title);
-                                    ui.add(egui::DragValue::new(value)
-                                        .clamp_range(3..=18).speed(0.1));
+                                    ui.heading(ability.to_string_short());
+                                    ui.add(
+                                        egui::DragValue::new(character.ability_score_mut(ability))
+                                            .clamp_range(3..=18)
+                                            .speed(0.1),
+                                    );
                                 });
                             });
-                        }
+                        };
 
-                        ab("STR", &mut character.abilities.strength, ui);
-                        ab("DEX", &mut character.abilities.dexterity, ui);
-                        ab("CON", &mut character.abilities.constitution, ui);
-                        ab("INT", &mut character.abilities.intelligence, ui);
-                        ab("WIS", &mut character.abilities.wisdom, ui);
-                        ab("CHA", &mut character.abilities.charisma, ui);
+                        ab(Ability::Strength, ui);
+                        ab(Ability::Dexterity, ui);
+                        ab(Ability::Constitution, ui);
+                        ab(Ability::Intelligence, ui);
+                        ab(Ability::Wisdom, ui);
+                        ab(Ability::Charisma, ui);
                     });
                 }
                 Mode::Edit => {
@@ -295,69 +347,147 @@ impl epi::App for App {
                     ui.text_edit_singleline(&mut character.gender);
 
                     egui::ComboBox::from_id_source("race")
+                        .width(256.0)
                         .selected_text(&character.race.name)
                         .show_ui(ui, |ui| {
-                            for i in srd::get_races().iter().map(|e| e.name.clone()) {
-                                ui.selectable_value(&mut character.race.name, i.clone(), i);
-                            }
-                        }
-                    );
-                    ui.horizontal(|ui| {
-                        egui::ComboBox::from_id_source("class")
-                            .selected_text(&character.class.name)
-                            .show_ui(ui, |ui| {
-                                for i in srd::get_classes().iter().map(|e| e.name.clone()) {
-                                    ui.selectable_value(&mut character.class.name, i.clone(), i);
+                            for race in races::get_races().iter() {
+                                match &race.subraces {
+                                    Some(subraces) => {
+                                        ui.label(&race.name);
+                                        for subrace in subraces {
+                                            ui.selectable_value(
+                                                &mut character.race.name,
+                                                subrace.name.clone(),
+                                                // format!("{}|{}", race.name, subrace.name),
+                                                format!("  {}", subrace.name),
+                                            );
+                                        }
+                                    }
+                                    None => {
+                                        ui.selectable_value(
+                                            &mut character.race.name,
+                                            race.name.clone(),
+                                            race.name.clone(),
+                                        );
+                                    }
                                 }
                             }
+                        });
+                    ui.horizontal(|ui| {
+                        egui::ComboBox::from_id_source("class")
+                            .width(256.0)
+                            .selected_text(&character.class.name)
+                            .show_ui(ui, |ui| {
+                                for i in classes::get_classes().iter().map(|e| e.name.clone()) {
+                                    ui.selectable_value(&mut character.class.name, i.clone(), i);
+                                }
+                            });
+                        ui.add(
+                            egui::DragValue::new(&mut character.level)
+                                .clamp_range(0..=20)
+                                .speed(0.1),
                         );
-                        ui.add(egui::DragValue::new(&mut character.level).clamp_range(0..=20).speed(0.1));
                     });
                     ui.horizontal(|ui| {
                         egui::ComboBox::from_id_source("background")
+                            .width(256.0)
                             .selected_text(&character.background.name)
                             .show_ui(ui, |ui| {
-                                for i in srd::get_backgrounds().iter().map(|e| e.name.clone()) {
-                                    ui.selectable_value(&mut character.background.name, i.clone(), i);
+                                for i in backgrounds::get_backgrounds()
+                                    .iter()
+                                    .map(|e| e.name.clone())
+                                {
+                                    ui.selectable_value(
+                                        &mut character.background.name,
+                                        i.clone(),
+                                        i,
+                                    );
                                 }
-                            }
-                        );
+                            });
                     });
                     ui.horizontal(|ui| {
-                        fn ab(title: &str, value: &mut u8, ui: &mut egui::Ui) {
+                        let mut ab = |ability: Ability, ui: &mut egui::Ui| {
                             ui.vertical(|ui| {
                                 ui.set_width(64.0);
                                 ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
-                                    ui.heading(title);
-                                    if *value < 20 {
+                                    let val = character.ability_score_mut(ability);
+
+                                    ui.heading(ability.to_string_short());
+                                    if *val < 20 {
                                         if ui.button("⏶").clicked() {
-                                            *value += 1;
+                                            *val += 1;
                                         }
                                     } else {
                                         ui.add(egui::Button::new("⏶").enabled(false));
                                     }
-                                    ui.label(value.to_string());
-                                    if *value > 3 {
+                                    ui.label(val.to_string());
+                                    if *val > 3 {
                                         if ui.button("⏷").clicked() {
-                                            *value -= 1;
+                                            *val -= 1;
                                         }
                                     } else {
                                         ui.add(egui::Button::new("⏷").enabled(false));
                                     }
                                 });
                             });
-                        }
+                        };
 
-                        ab("STR", &mut character.abilities.strength, ui);
-                        ab("DEX", &mut character.abilities.dexterity, ui);
-                        ab("CON", &mut character.abilities.constitution, ui);
-                        ab("INT", &mut character.abilities.intelligence, ui);
-                        ab("WIS", &mut character.abilities.wisdom, ui);
-                        ab("CHA", &mut character.abilities.charisma, ui);
+                        ab(Ability::Strength, ui);
+                        ab(Ability::Dexterity, ui);
+                        ab(Ability::Constitution, ui);
+                        ab(Ability::Intelligence, ui);
+                        ab(Ability::Wisdom, ui);
+                        ab(Ability::Charisma, ui);
+                    });
+                    ui.vertical(|ui| {
+                        let mut sk = |skill: Skill, ui: &mut egui::Ui| {
+                            ui.horizontal(|ui| {
+                                if ui.button(character.skill_level(skill).icon()).clicked() {
+                                    character.skill_level_mut(skill).learn();
+                                }
+                                ui.label(skill.to_string());
+                                ui.label(character::mod_str(character.skill_mod(skill)));
+                            });
+                        };
+
+                        sk(Skill::Acrobatics, ui);
+                        sk(Skill::AnimalHandling, ui);
+                        sk(Skill::Arcana, ui);
+                        sk(Skill::Athletics, ui);
+                        sk(Skill::Deception, ui);
+                        sk(Skill::History, ui);
+                        sk(Skill::Insight, ui);
+                        sk(Skill::Intimidation, ui);
+                        sk(Skill::Investigation, ui);
+                        sk(Skill::Medicine, ui);
+                        sk(Skill::Nature, ui);
+                        sk(Skill::Perception, ui);
+                        sk(Skill::Performance, ui);
+                        sk(Skill::Persuasion, ui);
+                        sk(Skill::Religion, ui);
+                        sk(Skill::SleightOfHand, ui);
+                        sk(Skill::Stealth, ui);
+                        sk(Skill::Survival, ui);
                     });
                 }
                 _ => (),
             };
         });
+
+        // window
+        // match *mode {
+        //     Mode::Save => {
+        //         egui::Window::new("Window").resizable(false).title_bar(false).show(ctx, |ui| {
+        //             ui.label("Windows can be moved by dragging them.");
+        //             ui.label("They are automatically sized based on contents.");
+        //             ui.label("You can turn on resizing and scrolling if you like.");
+        //             ui.label("You would normally chose either panels OR windows.");
+        //             if ui.button("OK").clicked() {
+        //                 self.mode = Mode::Display;
+        //             };
+        //         });
+        //     }
+        //     _ => {}
+        // }
     }
 }

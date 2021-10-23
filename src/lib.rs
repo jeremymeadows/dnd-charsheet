@@ -9,7 +9,6 @@ pub mod compendium;
 // pub mod widgets;
 
 pub use app::{App, Mode};
-pub use character::Character;
 
 // When compiling for web:
 #[cfg(target_arch = "wasm32")]

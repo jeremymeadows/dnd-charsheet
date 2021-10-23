@@ -1,12 +1,19 @@
-use dnd_charsheet::compendium::srd;
+use dnd_charsheet::compendium::{backgrounds, classes, races};
 
 fn main() {
-    let _races = srd::get_races();
-    let classes = srd::get_classes();
-    let _backgrounds = srd::get_backgrounds();
+    let _races = races::get_races();
+    let _classes = classes::get_classes();
+    let _backgrounds = backgrounds::get_backgrounds();
 
-    for i in classes.iter().map(|x| x.name.clone()) {
-      println!("{}", i);
+    for i in _races.iter() {
+        println!("{}", i.name);
+        match i.subraces.clone() {
+            Some(r) => {
+                for j in r {
+                    println!("  {}", j.name);
+                }
+            }
+            _ => {}
+        }
     }
-    println!("\n{:?}", classes[0].saves);
 }

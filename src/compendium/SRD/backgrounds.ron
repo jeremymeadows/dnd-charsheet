@@ -1,20 +1,4 @@
-use std::lazy::SyncLazy;
-use ron;
-use crate::compendium::Background;
-
-static BACKGROUNDS: SyncLazy<Vec<Background>> = SyncLazy::new(|| {
-    ron::from_str::<Vec<Background>>(SRD_BACKGROUNDS).unwrap()
-});
-
-pub fn get_backgrounds() -> Vec<Background> {
-    BACKGROUNDS.to_vec()
-}
-
-pub fn get_background(name: &str) -> Option<Background> {
-    BACKGROUNDS.iter().find(|e| e.name == name).cloned()
-}
-
-static SRD_BACKGROUNDS: &str = r#"[
+[
 Background(
     name: "Commoner",
 ),
@@ -110,4 +94,4 @@ Background(
             "You have a military rank from your career as a soldier. Soldiers loyal to your former military organization still recognize your authority and influence, and they defer to you if they are of a lower rank. You can invoke your rank to exert influence over other soldiers and requisition simple equipment or horses for temporary use. You can also usually gain access to friendly military encampments and fortresses where your rank is recognized.",
     },
 ),
-]"#;
+]
