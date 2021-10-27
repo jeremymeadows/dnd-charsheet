@@ -1,0 +1,613 @@
+[
+// Currency
+Item(
+    name: "Copper (cp)",
+    item_type: Currency,
+    value: Copper(1),
+    weight: 0.02,
+),
+Item(
+    name: "Silver (sp)",
+    item_type: Currency,
+    value: Silver(1),
+    weight: 0.02,
+),
+Item(
+    name: "Electrum (ep)",
+    item_type: Currency,
+    value: Electrum(1),
+    weight: 0.02,
+),
+Item(
+    name: "Gold (gp)",
+    item_type: Currency,
+    value: Gold(1),
+    weight: 0.02,
+),
+Item(
+    name: "Platinum (pp)",
+    item_type: Currency,
+    value: Platinum(1),
+    weight: 0.02,
+),
+// Light Armor
+Item(
+    name: "Padded Armor",
+    item_type: Armor(Light),
+    value: Gold(5),
+    weight: 8,
+    armor_class: 11,
+    description:
+        "Padded armor consists of quilted layers of cloth and batting.\n\nSource: Player's Handbook, page 144",
+    traits:{
+        ".skills.stealth": "disadvantage",
+    },
+),
+Item(
+    name: "Leather Armor",
+    item_type: Armor(Light),
+    value: Gold(10),
+    weight: 10,
+    armor_class: 11,
+    description:
+        "The breastplate and shoulder protectors of this armor are made of leather that has been stiffened by being boiled in oil. The rest of the armor is made of softer and more flexible materials.\n\nSource: Player's Handbook, page 144",
+),
+Item(
+    name: "Studded Leather Armor",
+    item_type: Armor(Light),
+    value: Gold(45),
+    weight: 13,
+    armor_class: 12,
+    description:
+        "Made from tough but flexible leather, studded leather is reinforced with close-set rivets or spikes.\n\nSource: Player's Handbook, page 144",
+),
+// Medium Armor
+Item(
+    name: "Hide Armor",
+    item_type: Armor(Medium),
+    value: Gold(10),
+    weight: 12,
+    armor_class: 12,
+    description:
+        "This crude armor consists of thick furs and pelts. It is commonly worn by barbarian tribes, evil humanoids, and other folk who lack access to the tools and materials needed to create better armor.\n\nSource: Player's Handbook, page 144",
+),
+Item(
+    name: "Chain Shirt",
+    item_type: Armor(Medium),
+    value: Gold(50),
+    weight: 20,
+    armor_class: 13,
+    description:
+        "Made of interlocking metal rings, a chain shirt is worn between layers of clothing or leather. This armor offers modest protection to the wearer's upper body and allows the sound of the rings rubbing against one another to be muffled by outer layers.\n\nSource: Player's Handbook, page 144",
+),
+Item(
+    name: "Scale Mail",
+    item_type: Armor(Medium),
+    value: Gold(50),
+    weight: 45,
+    armor_class: 14,
+    description:
+        "This armor consists of a coat and leggings (and perhaps a separate skirt) of leather covered with overlapping pieces of metal, much like the scales of a fish. The suit includes gauntlets.\n\nSource: Player's Handbook, page 144",
+    traits:{
+        ".skills.stealth": "disadvantage",
+    },
+),
+Item(
+    name: "Breastplate",
+    item_type: Armor(Medium),
+    value: Gold(400),
+    weight: 20,
+    armor_class: 14,
+    description:
+        "This armor consists of a fitted metal chest piece worn with supple leather. Although it leaves the legs and arms relatively unprotected, this armor provides good protection for the wearer's vital organs while leaving the wearer relatively unencumbered.\n\nSource: Player's Handbook, page 145",
+),
+Item(
+    name: "Half Plate",
+    item_type: Armor(Medium),
+    value: Gold(750),
+    weight: 40,
+    armor_class: 15,
+    description:
+        "Half plate consists of shaped metal plates that cover most of the wearer's body. It does not include leg protection beyond simple greaves that are attached with leather straps.\n\nSource: Player's Handbook, page 145",
+    traits:{
+        ".skills.stealth": "disadvantage",
+    },
+),
+// Heavy Armor
+Item(
+    name: "Ring Mail",
+    item_type: Armor(Heavy),
+    value: Gold(30),
+    weight: 40,
+    armor_class: 14,
+    description:
+        "This armor is leather armor with heavy rings sewn into it. The rings help reinforce the armor against blows from swords and axes. Ring mail is inferior to chain mail, and it's usually worn only by those who can't afford better armor.\n\nSource: Player's Handbook, page 145",
+    traits:{
+        ".skills.stealth": "disadvantage",
+    },
+),
+Item(
+    name: "Chain Mail",
+    item_type: Armor(Heavy),
+    value: Gold(75),
+    weight: 55,
+    armor_class: 16,
+    description:
+        "Made of interlocking metal rings, chain mail includes a layer of quilted fabric worn underneath the mail to prevent chafing and to cushion the impact of blows. The suit includes gauntlets.\n\nSource: Player's Handbook, page 145",
+    traits:{
+        ".prerequisite.strength": "13",
+        ".skills.stealth": "disadvantage",
+    },
+),
+Item(
+    name: "Splint Armor",
+    item_type: Armor(Heavy),
+    value: Gold(200),
+    weight: 60,
+    armor_class: 17,
+    description:
+        "This armor is made of narrow vertical strips of metal riveted to a backing of leather that is worn over cloth padding. Flexible chain mail protects the joints.\n\nSource: Player's Handbook, page 145",
+    traits:{
+        ".prerequisite.strength": "15",
+        ".skills.stealth": "disadvantage",
+    },
+),
+Item(
+    name: "Plate Armor",
+    item_type: Armor(Heavy),
+    value: Gold(1500),
+    weight: 65,
+    armor_class: 18,
+    description:
+        "Plate consists of shaped, interlocking metal plates to cover the entire body. A suit of plate includes gauntlets, heavy leather boots, a visored helmet, and thick layers of padding underneath the armor. Buckles and straps distribute the weight over the body.\n\nSource: Player's Handbook, page 145",
+    traits:{
+        ".prerequisite.strength": "15",
+        ".skills.stealth": "disadvantage",
+    },
+),
+// Shield
+Item(
+    name: "Shield",
+    item_type: Shield,
+    value: Gold(10),
+    weight: 6,
+    armor_class: 2,
+    description:
+        "A shield is made from wood or metal and is carried in one hand. Wielding a shield increases your Armor Class by 2. You can benefit from only one shield at a time.\n\nSource: Player's Handbook, page 144",
+),
+// Simple Melee Weapons
+Item(
+    name: "Club",
+    item_type: Weapon(SimpleMelee(Bludgeoning)),
+    value: Silver(1),
+    weight: 2,
+    damage_die: 4,
+    properties: [
+        Light,
+    ],
+),
+Item(
+    name: "Dagger",
+    item_type: Weapon(SimpleMelee(Piercing)),
+    value: Gold(2),
+    weight: 1,
+    damage_die: 4,
+    properties: [
+        Finesse,
+        Light,
+        Thrown,
+    ],
+    traits:{
+        ".range": "20/60",
+    },
+),
+Item(
+    name: "Greatclub",
+    item_type: Weapon(SimpleMelee(Bludgeoning)),
+    value: Silver(2),
+    weight: 10,
+    damage_die: 8,
+    properties: [
+        TwoHanded,
+    ],
+),
+Item(
+    name: "Handaxe",
+    item_type: Weapon(SimpleMelee(Slashing)),
+    value: Gold(5),
+    weight: 2,
+    damage_die: 6,
+    properties: [
+        Light,
+        Thrown,
+    ],
+    traits:{
+        ".range": "20/60",
+    },
+),
+Item(
+    name: "Javelin",
+    item_type: Weapon(SimpleMelee(Piercing)),
+    value: Silver(2),
+    weight: 2,
+    damage_die: 6,
+    properties: [
+        Thrown,
+    ],
+    traits:{
+        ".range": "30/120",
+    },
+),
+Item(
+    name: "Light Hammer",
+    item_type: Weapon(SimpleMelee(Bludgeoning)),
+    value: Gold(2),
+    weight: 2,
+    damage_die: 4,
+    properties: [
+        Light,
+        Thrown,
+    ],
+    traits:{
+        ".range": "20/60",
+    },
+),
+Item(
+    name: "Mace",
+    item_type: Weapon(SimpleMelee(Bludgeoning)),
+    value: Gold(5),
+    weight: 4,
+    damage_die: 6,
+),
+Item(
+    name: "Quarterstaff",
+    item_type: Weapon(SimpleMelee(Bludgeoning)),
+    value: Silver(2),
+    weight: 4,
+    damage_die: 6,
+    properties: [
+        Versatile,
+    ],
+),
+Item(
+    name: "Sickle",
+    item_type: Weapon(SimpleMelee(Slashing)),
+    value: Gold(1),
+    weight: 2,
+    damage_die: 4,
+    properties: [
+        Light,
+    ],
+),
+Item(
+    name: "Spear",
+    item_type: Weapon(SimpleMelee(Piercing)),
+    value: Gold(1),
+    weight: 3,
+    damage_die: 6,
+    properties: [
+        Thrown,
+        Versatile,
+    ],
+    traits:{
+        ".range": "20/60",
+    },
+),
+// Simple Ranged Weapons
+Item(
+    name: "Crossbow, light",
+    item_type: Weapon(SimpleRanged(Piercing)),
+    value: Gold(25),
+    weight: 5,
+    damage_die: 8,
+    properties: [
+        Ammunition,
+        Loading,
+        TwoHanded,
+    ],
+    traits:{
+        ".range": "80/320",
+    },
+),
+Item(
+    name: "Dart",
+    item_type: Weapon(SimpleRanged(Piercing)),
+    value: Copper(5),
+    weight: 0.25,
+    damage_die: 4,
+    properties: [
+        Finesse,
+        Thrown,
+    ],
+    traits:{
+        ".range": "20/60",
+    },
+),
+Item(
+    name: "Shortbow",
+    item_type: Weapon(SimpleRanged(Piercing)),
+    value: Gold(25),
+    weight: 2,
+    damage_die: 6,
+    properties: [
+        Ammunition,
+        TwoHanded,
+    ],
+    traits:{
+        ".range": "80/320",
+    },
+),
+Item(
+    name: "Sling",
+    item_type: Weapon(SimpleRanged(Bludgeoning)),
+    value: Silver(1),
+    damage_die: 4,
+    properties: [
+        Ammunition,
+    ],
+),
+// Martial Melee Weapons
+Item(
+    name: "Battleaxe",
+    item_type: Weapon(MartialMelee(Slashing)),
+    value: Gold(10),
+    weight: 4,
+    damage_die: 8,
+    properties: [
+        Versatile,
+    ],
+),
+Item(
+    name: "Flail",
+    item_type: Weapon(MartialMelee(Bludgeoning)),
+    value: Gold(10),
+    weight: 2,
+    damage_die: 8,
+),
+Item(
+    name: "Glaive",
+    item_type: Weapon(MartialMelee(Slashing)),
+    value: Gold(20),
+    weight: 6,
+    damage_die: 10,
+    properties: [
+        Heavy,
+        Reach,
+        TwoHanded,
+    ],
+),
+Item(
+    name: "Greataxe",
+    item_type: Weapon(MartialMelee(Slashing)),
+    value: Gold(30),
+    weight: 7,
+    damage_die: 12,
+    properties: [
+        Heavy,
+        TwoHanded,
+    ],
+),
+Item(
+    name: "Greatsword",
+    item_type: Weapon(MartialMelee(Slashing)),
+    value: Gold(50),
+    weight: 6,
+    damage_die: 6,
+    properties: [
+        Heavy,
+        TwoHanded,
+    ],
+),
+Item(
+    name: "Halberd",
+    item_type: Weapon(MartialMelee(Slashing)),
+    value: Gold(20),
+    weight: 6,
+    damage_die: 10,
+    properties: [
+        Heavy,
+        Reach,
+        TwoHanded,
+    ],
+),
+Item(
+    name: "Lance",
+    item_type: Weapon(MartialMelee(Piercing)),
+    value: Gold(10),
+    weight: 6,
+    damage_die: 12,
+    properties: [
+        Reach,
+        Special,
+    ],
+),
+Item(
+    name: "Longsword",
+    item_type: Weapon(MartialMelee(Slashing)),
+    value: Gold(15),
+    weight: 3,
+    damage_die: 8,
+    properties: [
+        Versatile,
+    ],
+),
+Item(
+    name: "Maul",
+    item_type: Weapon(MartialMelee(Bludgeoning)),
+    value: Gold(10),
+    weight: 10,
+    damage_die: 6,
+    properties: [
+        Heavy,
+        TwoHanded,
+    ],
+),
+Item(
+    name: "Morningstar",
+    item_type: Weapon(MartialMelee(Bludgeoning)),
+    value: Gold(15),
+    weight: 4,
+    damage_die: 8,
+),
+Item(
+    name: "Pike",
+    item_type: Weapon(MartialMelee(Piercing)),
+    value: Gold(5),
+    weight: 18,
+    damage_die: 10,
+    properties: [
+        Heavy,
+        Reach,
+        TwoHanded,
+    ],
+),
+Item(
+    name: "Rapier",
+    item_type: Weapon(MartialMelee(Piercing)),
+    value: Gold(25),
+    weight: 2,
+    damage_die: 8,
+    properties: [
+        Finesse,
+    ],
+),
+Item(
+    name: "Scimitar",
+    item_type: Weapon(MartialMelee(Slashing)),
+    value: Gold(25),
+    weight: 3,
+    damage_die: 6,
+    properties: [
+        Finesse,
+        Light,
+    ],
+),
+Item(
+    name: "Shortsword",
+    item_type: Weapon(MartialMelee(Piercing)),
+    value: Gold(10),
+    weight: 2,
+    damage_die: 6,
+    properties: [
+        Finesse,
+        Light,
+    ],
+),
+Item(
+    name: "Trident",
+    item_type: Weapon(MartialMelee(Piercing)),
+    value: Gold(5),
+    weight: 4,
+    damage_die: 6,
+    properties: [
+        Thrown,
+        Versatile,
+    ],
+    traits:{
+        ".range": "20/60",
+    },
+),
+Item(
+    name: "War Pick",
+    item_type: Weapon(MartialMelee(Piercing)),
+    value: Gold(5),
+    weight: 2,
+    damage_die: 8,
+),
+Item(
+    name: "Warhammer",
+    item_type: Weapon(MartialMelee(Bludgeoning)),
+    value: Gold(15),
+    weight: 2,
+    damage_die: 8,
+    properties: [
+        Versatile,
+    ],
+),
+Item(
+    name: "Whip",
+    item_type: Weapon(MartialMelee(Slashing)),
+    value: Gold(2),
+    weight: 3,
+    damage_die: 4,
+    properties: [
+        Finesse,
+        Reach,
+    ],
+),
+// Martial Ranged Weapons
+Item(
+    name: "Blowgun",
+    item_type: Weapon(MartialRanged(Piercing)),
+    value: Gold(10),
+    weight: 1,
+    damage_die: 1,
+    properties: [
+        Ammunition,
+        Loading,
+    ],
+    traits:{
+        ".range": "25/100",
+    },
+),
+Item(
+    name: "Crossbow, hand",
+    item_type: Weapon(MartialRanged(Piercing)),
+    value: Gold(75),
+    weight: 3,
+    damage_die: 6,
+    properties: [
+        Ammunition,
+        Light,
+        Loading,
+    ],
+    traits:{
+        ".range": "30/120",
+    },
+),
+Item(
+    name: "Crossbow, heavy",
+    item_type: Weapon(MartialRanged(Piercing)),
+    value: Gold(50),
+    weight: 18,
+    damage_die: 10,
+    properties: [
+        Ammunition,
+        Heavy,
+        Loading,
+        TwoHanded,
+    ],
+    traits:{
+        ".range": "100/400",
+    },
+),
+Item(
+    name: "Longbow",
+    item_type: Weapon(MartialRanged(Piercing)),
+    value: Gold(50),
+    weight: 2,
+    damage_die: 8,
+    properties: [
+        Ammunition,
+        Heavy,
+        TwoHanded,
+    ],
+    traits:{
+        ".range": "150/600",
+    },
+),
+Item(
+    name: "Net",
+    item_type: Weapon(MartialRanged(None)),
+    value: Gold(1),
+    weight: 3,
+    properties: [
+        Special,
+        Thrown,
+    ],
+    traits:{
+        ".range": "5/15",
+    },
+),
+// Tools
+]

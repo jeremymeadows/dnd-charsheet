@@ -1,9 +1,16 @@
-use crate::character::Item;
+use crate::character::{EquipState, Item, ItemType};
 use ron;
 use std::lazy::SyncLazy;
 
 static ITEMS: SyncLazy<Vec<Item>> = SyncLazy::new(|| {
-    ron::from_str::<Vec<Item>>(&String::from_utf8_lossy(include_bytes!("SRD/items.ron"))).unwrap()
+    let mut v = ron::from_str::<Vec<Item>>(include_str!("SRD/items.ron")).unwrap();
+    v.iter_mut().for_each(|e| match e.item_type {
+        ItemType::Armor(_) | ItemType::Shield | ItemType::Weapon(_) => {
+            e.equipped = EquipState::Unequipped;
+        }
+        _ => {}
+    });
+    v
 });
 
 pub fn get_items() -> Vec<Item> {

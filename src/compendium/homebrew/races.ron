@@ -1,0 +1,74 @@
+[
+Race(
+    name: "Aasimar",
+    size: Medium,
+    speed: 30,
+    abilities:(
+        charisma: 2,
+    ),
+    traits:{
+        "Darkvision":
+            "Blessed with a radiant soul, your vision can easily cut through darkness. You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You can't discern color in darkness, only shades of gray.",
+        "Celestial Resistance":
+            "You have resistance to necrotic damage and radiant damage",
+        ".damage.resistance": "necrotic",
+        ".damage.resistance": "radiant",
+        "Healing Hands":
+            "As an action, you can touch a creature and cause it to regain a number of hit points equal to your level. Once you use this trait, you can't use it again until you finish a long rest.",
+        "Light Bearer":
+            "You know the *light* cantrip. Charisma is your spellcasting ability for it.",
+        ".spell": "light",
+        "Languages":
+            "You can speak, read, and write Common and Celestial",
+    },
+    subraces: Some([
+        SubRace(
+            name: "Protector Aasimar",
+            abilities:(
+                wisdom: 1,
+            ),
+            traits:{
+                "Radiant Soul":
+                    "Starting at 3rd level, you can use your action to unleash divine energy within yourself, causing your eyes to glimmer and two luminious, incorporeal wings to sprout from your back.\n\tYour transformation lasts for 1 minute or until you end it as a bonus action. During it, you have a flying speed of 30 feet, and once in each of your turns, you can deal extra radiant damage to one target when you deal damage to it with an attack of a spell. The extra radiant damage equals your level.\n\tOnce you use this trait, you can't use it again until you finish a long rest.",
+            },
+        ),
+        SubRace(
+            name: "Scourge Aasimar",
+            abilities:(
+                constitution: 1,
+            ),
+            traits:{
+                "Radiant Consumption":
+                    "Starting at 3rd level, you can use your action to unleash the divine energy within yourself, causing a searing light to radiate from you, pour out of your eyes and mouth, and threaten to char you.\n\tYour transformation lasts for 1 minute or until you end it as a bonus action. During it, you shed bright light in a 10-foot radius and dim light for an additional 10 feet, and at the end of each if your turns, you and each creature within 10 feet of you take radiant damage equal to half your level (rounded up). In addition, once on each of your turns, you can deal extra radiant damage to one target when you deal damage to it with an attack or a spell. The extra radiant damage equals your level.\n\tOnce you use this trait, you can't use it again ultil you finish a long rest.",
+            },
+        ),
+        SubRace(
+            name: "Fallen Aasimar",
+            abilities:(
+                strength: 1,
+            ),
+            traits:{
+                "Necrotic Shroud":
+                    "Starting at 3rd level, you can use your action to unleash the divine energy within yourself, causing your eyes to turn into pools of darkness and two skeletal, ghostly, flightless wings to sprout from your back. The instant you transform, other creatures within 10 feet of you that can see you must each succeed on a Charisma saving throw (DC 8 + your proficiency bonus + your Charisma modifier) or become freightened of you until the end of your next turn.\n\tYour transformation lasts for 1 minute or until you end it as a bonus action. During it, once on each of your turns, you can deal extra nectoric damage to one target when you deal damage to it with an attack or a spell. The extra nectoric damage equals your leve.\n\tOnce you use this trait, you can't use it again ultil you finish a long rest.",
+            },
+        ),
+    ]),
+),
+Race(
+    name: "Elf",
+    subraces: Some([
+        SubRace(
+            name: "Christmas Elf",
+            abilities:(
+                charisma: 1,
+            ),
+            traits:{
+                "Elf Weapon Training":
+                    "You have proficiency with the longsword, shortsword, shortbow, and longbow.",
+                "North Pole Resident":
+                    "You are resistant to cold damage, and have advantage on Dexterity saving throws when the weather is below freezing, or when there is snow/ice on the ground.",
+            },
+        ),
+    ]),
+),
+]

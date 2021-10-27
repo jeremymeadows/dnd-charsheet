@@ -2,9 +2,8 @@ use crate::character::Feat;
 use ron;
 use std::lazy::SyncLazy;
 
-static FEATS: SyncLazy<Vec<Feat>> = SyncLazy::new(|| {
-    ron::from_str::<Vec<Feat>>(&String::from_utf8_lossy(include_bytes!("SRD/feats.ron"))).unwrap()
-});
+static FEATS: SyncLazy<Vec<Feat>> =
+    SyncLazy::new(|| ron::from_str::<Vec<Feat>>(include_str!("SRD/feats.ron")).unwrap());
 
 pub fn get_feats() -> Vec<Feat> {
     FEATS.to_vec()

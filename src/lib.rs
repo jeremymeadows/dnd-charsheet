@@ -6,7 +6,7 @@
 mod app;
 pub mod character;
 pub mod compendium;
-// pub mod widgets;
+pub mod pages;
 
 pub use app::{App, Mode};
 

@@ -1,24 +1,5 @@
 [
 Class(
-    name: "test",
-    hit_die: 20,
-    saves:(
-        strength: Proficient,
-        wisdom: Proficient,
-    ),
-    features:{
-        1:{
-            ".abilities.dexterity": "100",
-            ".skills.athletics": "Proficient",
-        },
-        2:{
-            ".abilities.constitution": "100",
-            ".skills.athletics": "Expert",
-            ".skills.acrobatics": "Proficient",
-        },
-    },
-),
-Class(
     name: "Barbarian",
     hit_die: 12,
     saves:(
@@ -737,20 +718,13 @@ Class(
                 "When a creature you can see attacks a target other than you that is within 5 feet of you, you can use your reaction to impose disadvantage on the attack roll. You must be wielding a shield.",
             "Spellcasting":
                 "By 2nd level, you have learned to draw on divine magic through meditation and prayer to cast spells as a cleric does. See chapter 10 for the general rules of spellcasting and chapter 11 for the paladin spell list.\n\nPreparing and Casting Spells\nThe Paladin table shows how many spell slots you have to cast your spells. To cast one of your paladin spells of 1st level or higher, you must expend a slot of the spell's level or higher. You regain all expended spell slots when you finish a long rest.\n\nYou prepare the list of paladin spells that are available for you to cast, choosing from the paladin spell list. When you do so, choose a number of paladin spells equal to your Charisma modifier + half your paladin level, rounded down (minimum of one spell). The spells must be of a level for which you have spell slots.\n\nFor example, if you are a 5th-level paladin, you have four 1st-level and two 2nd-level spell slots. With a Charisma of 14, your list of prepared spells can include four spells of 1st or 2nd level, in any combination. If you prepare the 1st-level spell cure wounds, you can cast it using a 1st-level or a 2nd-level slot. Casting the spell doesn't remove it from your list of prepared spells.\n\nYou can change your list of prepared spells when you finish a long rest. Preparing a new list of paladin spells requires time spent in prayer and meditation: at least 1 minute per spell level for each spell on your list.\n\nSpellcasting Ability\nCharisma is your spellcasting ability for your paladin spells, since their power derives from the strength of your convictions. You use your Charisma whenever a spell refers to your spellcasting ability. In addition, you use your Charisma modifier when setting the saving throw DC for a paladin spell you cast and when making an attack roll with one.\n\n\tSpell save DC = 8 + your proficiency bonus + your Charisma modifier\n\n\tSpell attack modifier = your proficiency bonus + your Charisma modifier\n\nSpellcasting Focus\nYou can use a holy symbol (found in chapter 5) as a spellcasting focus for your paladin spells.",
+            ".spellcasting": "Charisma",
         },
         3:{
             "Divine Health":
                 "By 3rd level, the divine magic flowing through you makes you immune to disease.",
             "Sacred Oath":
                 "When you reach 3rd level, you swear the oath that binds you as a paladin forever. Up to this time you have been in a preparatory stage, committed to the path but not yet sworn to it. Now you choose the Oath of Devotion, the Oath of the Ancients, the Oath of the Crown, or the Oath of Vengeance, all detailed at the end of the c1ass description.\n\nYour choice grants you features at 3rd level and again at 7th, 15th, and 20th level. Those features include oath spells and the Channel Divinity feature.",
-            "Sacred Oath: Oath of Devotion":
-                "The Oath of Devotion binds a paladin to the loftiest ideals of justice, virtue, and order. Sometimes called cavaliers, white knights, or holy warriors, these paladins meet the ideal of the knight in shining armor, acting with honor in pursuit of justice and the greater good. They hold themselves to the highest standards of conduct, and some, for better or worse, hold the rest of the world to the same standards. Many who swear this oath are devoted to gods of law and good and use their gods' tenets as the measure of their devotion. They hold angels - the perfect servants of good - as their ideals, and incorporate images of angelic wings into their helmets or coats of arms.\n\nTenets of Devotion\nThough the exact words and strictures of the Oath of Devotion vary, paladins of this oath share these tenets.\n\tHonesty. Don't lie or cheat. Let your word be your promise.\n\tCourage. Never fear to act, though caution is wise.\n\tCompassion. Aid others, protect the weak, and punish those who threaten them. Show mercy to your foes, but temper it with wisdom.\n\tHonor. Treat others with fairness, and let your honorable deeds be an example to them. Do as much good as possible while causing the least amount of harm.\n\tDuty. Be responsible for your actions and their consequences, protect those entrusted to your care, and obey those who have just authority over you.",
-            "Oath of Devotion Channel Divinity: Sacred Weapon":
-                "As an action, you can imbue one weapon that you are holding with positive energy, using your Channel Divinity. For 1 minute, you add your Charisma modifier to attack rolls made with that weapon (with a minimum bonus of +1). The weapon also emits bright light in a 20-foot radius and dim light 20 feet beyond that. If the weapon is not already magical, it becomes magical for the duration.\n\nYou can end this effect on your turn as part of any other action. If you are no longer holding or carrying this weapon, or if you fall unconscious, this effect ends.",
-            "Oath of Devotion Channel Divinity: Turn the Unholy":
-                "As an action, you present your holy symbol and speak a prayer censuring fiends and undead, using your Channel Divinity. Each fiend or undead that can see or hear you within 30 feet of you must make a Wisdom saving throw. If the creature fails its saving throw, it is turned for 1 minute or until it takes damage.\n\nA turned creature must spend its turns trying to move as far away from you as it can, and it can't willingly move to a space within 30 feet of you. It also can't take reactions. For its action, it can use only the Dash action or try to escape from an effect that prevents it from moving. If there's nowhere to move, the creature can use the Dodge action.",
-            "Oath of Devotion: Oath Spells":
-                "You gain oath spells at the paladin levels listed.\n\n3rd - protection from evil and good, sanctuary\n5th - lesser restoration, zone of truth\n9th - beacon of hope, dispel magic\n13th - freedom of movement, guardian of faith\n17th - commune, flame strike",
         },
         4:{
             "Ability Score Improvement":
@@ -763,10 +737,6 @@ Class(
         6:{
             "Aura of Protection":
                 "Starting at 6th level, whenever you or a friendly creature within 10 feet of you must make a saving throw, the creature gains a bonus to the saving throw equal to your Charisma modifier (with a minimum bonus of +1). You must be conscious to grant this bonus.\n\nAt 18th level, the range of this aura increases to 30 feet.",
-        },
-        7:{
-            "Oath of Devotion: Aura of Devotion":
-                "Starting at 7th level, you and friendly creatures within 10 feet of you can't be charmed while you are conscious.\n\nAt 18th level, the range of this aura increases to 30 feet.",
         },
         8:{
             "Ability Score Improvement":
@@ -788,10 +758,6 @@ Class(
             "Cleansing Touch":
                 "Beginning at 14th level, you can use your action to end one spell on yourself or on one willing creature that you touch.\n\nYou can use this feature a number of times equal to your Charisma modifier (a minimum of once). You regain expended uses when you finish a long rest.",
         },
-        15:{
-            "Oath of Devotion: Purity of Spirit":
-                "Beginning at 15th level, you are always under the effects of a protection from evil and good spell.",
-        },
         16:{
             "Ability Score Improvement":
                 "When you reach 16th level you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can't increase an ability score above 20 using this feature.\n\nIf your DM allows the use of feats, you may instead take a feat.",
@@ -804,11 +770,53 @@ Class(
             "Ability Score Improvement":
                 "When you reach 19th level you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can't increase an ability score above 20 using this feature.\n\nIf your DM allows the use of feats, you may instead take a feat.",
         },
-        20:{
-            "Oath of Devotion: Holy Nimbus":
-                "At 20th level, as an action, you can emanate an aura of sunlight. For 1 minute, bright light shines from you in a 30-foot radius, and dim light shines 30 feet beyond that.\n\nWhenever an enemy creature starts its turn in the bright light, the creature takes 10 radiant damage.\n\nIn addition, for the duration, you have advantage on saving throws against spells cast by fiends or undead.\n\nOnce you use this feature, you can't use it again until you finish a long rest.",
-        },
     },
+    subclasses:[
+        SubClass(
+            name: "Oath of Devotion",
+            features:{
+                3:{
+                    "Oath Spells":
+                        "You gain oath spells at the paladin levels listed.\n\n3rd - protection from evil and good, sanctuary\n5th - lesser restoration, zone of truth\n9th - beacon of hope, dispel magic\n13th - freedom of movement, guardian of faith\n17th - commune, flame strike",
+                    ".spell": "Protection from Evil and Good",
+                    ".spell": "Sanctuary",
+                    "Channel Divinity: Sacred Weapon":
+                        "As an action, you can imbue one weapon that you are holding with positive energy, using your Channel Divinity. For 1 minute, you add your Charisma modifier to attack rolls made with that weapon (with a minimum bonus of +1). The weapon also emits bright light in a 20-foot radius and dim light 20 feet beyond that. If the weapon is not already magical, it becomes magical for the duration.\n\nYou can end this effect on your turn as part of any other action. If you are no longer holding or carrying this weapon, or if you fall unconscious, this effect ends.",
+                    "Channel Divinity: Turn the Unholy":
+                        "As an action, you present your holy symbol and speak a prayer censuring fiends and undead, using your Channel Divinity. Each fiend or undead that can see or hear you within 30 feet of you must make a Wisdom saving throw. If the creature fails its saving throw, it is turned for 1 minute or until it takes damage.\n\nA turned creature must spend its turns trying to move as far away from you as it can, and it can't willingly move to a space within 30 feet of you. It also can't take reactions. For its action, it can use only the Dash action or try to escape from an effect that prevents it from moving. If there's nowhere to move, the creature can use the Dodge action.",
+                },
+                5:{
+                    ".spell": "Lesser Restoration",
+                    ".spell": "Zone of Truth",
+                },
+                7:{
+                    "Aura of Devotion":
+                        "Starting at 7th level, you and friendly creatures within 10 feet of you can't be charmed while you are conscious.\n\nAt 18th level, the range of this aura increases to 30 feet.",
+                },
+                9:{
+                    ".spell": "Beacon of Hope",
+                    ".spell": "Dispel Magic",
+                },
+                13:{
+                    ".spell": "Freedom of Movement",
+                    ".spell": "Guardian of Faith",
+                },
+                15:{
+                    "Purity of Spirit":
+                        "Beginning at 15th level, you are always under the effects of a protection from evil and good spell.",
+                },
+                17:{
+                    ".spell": "Commune",
+                    ".spell": "Flame Strike",
+                },
+                20:{
+                    "Holy Nimbus":
+                        "At 20th level, as an action, you can emanate an aura of sunlight. For 1 minute, bright light shines from you in a 30-foot radius, and dim light shines 30 feet beyond that.\n\nWhenever an enemy creature starts its turn in the bright light, the creature takes 10 radiant damage.\n\nIn addition, for the duration, you have advantage on saving throws against spells cast by fiends or undead.\n\nOnce you use this feature, you can't use it again until you finish a long rest.",
+                },
+            },
+            description: "The Oath of Devotion binds a paladin to the loftiest ideals of justice, virtue, and order. Sometimes called cavaliers, white knights, or holy warriors, these paladins meet the ideal of the knight in shining armor, acting with honor in pursuit of justice and the greater good. They hold themselves to the highest standards of conduct, and some, for better or worse, hold the rest of the world to the same standards. Many who swear this oath are devoted to gods of law and good and use their gods' tenets as the measure of their devotion. They hold angels - the perfect servants of good - as their ideals, and incorporate images of angelic wings into their helmets or coats of arms.\n\nTenets of Devotion\nThough the exact words and strictures of the Oath of Devotion vary, paladins of this oath share these tenets.\n\tHonesty. Don't lie or cheat. Let your word be your promise.\n\tCourage. Never fear to act, though caution is wise.\n\tCompassion. Aid others, protect the weak, and punish those who threaten them. Show mercy to your foes, but temper it with wisdom.\n\tHonor. Treat others with fairness, and let your honorable deeds be an example to them. Do as much good as possible while causing the least amount of harm.\n\tDuty. Be responsible for your actions and their consequences, protect those entrusted to your care, and obey those who have just authority over you.",
+        ),
+    ],
 ),
 Class(
     name: "Ranger",

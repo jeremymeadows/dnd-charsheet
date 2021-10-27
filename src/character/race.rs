@@ -69,3 +69,21 @@ impl Default for SubRace {
         }
     }
 }
+
+impl Race {
+    pub fn get_modifiers(
+        &self,
+        filter: impl Fn(&String, &String) -> bool,
+    ) -> BTreeMap<String, String> {
+        let mut modifiers = BTreeMap::new();
+
+        self.traits
+            .iter()
+            .filter(|(k, v)| filter(k, v))
+            .for_each(|(k, v)| {
+                modifiers.insert(k.to_string(), v.to_string());
+            });
+
+        modifiers
+    }
+}

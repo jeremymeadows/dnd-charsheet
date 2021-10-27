@@ -3,23 +3,7 @@ pub mod classes;
 pub mod feats;
 pub mod items;
 pub mod races;
-
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
-pub enum DamageType {
-    Bludgeoning,
-    Piercing,
-    Slashing,
-    Acid,
-    Poison,
-    Cold,
-    Fire,
-    Force,
-    Psychic,
-    Lightning,
-    Thunder,
-    Necrotic,
-    Radiant,
-}
+pub mod spells;
 
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
 pub enum Conditions {

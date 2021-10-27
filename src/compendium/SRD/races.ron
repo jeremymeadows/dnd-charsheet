@@ -5,10 +5,6 @@ Race(
     speed: 30,
     abilities:(
         strength: 2,
-        dexterity: 0,
-        constitution: 0,
-        intelligence: 0,
-        wisdom: 0,
         charisma: 1,
     ),
     traits:{
@@ -158,12 +154,7 @@ Race(
     size: Medium,
     speed: 25,
     abilities:(
-        strength: 0,
-        dexterity: 0,
-        constitution: 0,
         intelligence: 2,
-        wisdom: 0,
-        charisma: 0,
     ),
     traits:{
         "Darkvision":
@@ -177,12 +168,7 @@ Race(
         SubRace(
             name: "Deep Gnome (Svirfneblin)",
             abilities:(
-                strength: 0,
                 dexterity: 1,
-                constitution: 0,
-                intelligence: 0,
-                wisdom: 0,
-                charisma: 0,
             ),
             traits:{
                 "Superior Darkvision":
@@ -196,12 +182,7 @@ Race(
         SubRace(
             name: "Forest Gnome",
             abilities:(
-                strength: 0,
                 dexterity: 1,
-                constitution: 0,
-                intelligence: 0,
-                wisdom: 0,
-                charisma: 0,
             ),
             traits:{
                 "Natural Illusionist":
@@ -214,12 +195,7 @@ Race(
         SubRace(
             name: "Rock Gnome",
             abilities:(
-                strength: 0,
-                dexterity: 0,
                 constitution: 1,
-                intelligence: 0,
-                wisdom: 0,
-                charisma: 0,
             ),
             traits:{
                 "Artificer's Lore":
@@ -235,12 +211,7 @@ Race(
     size: Small,
     speed: 25,
     abilities:(
-        strength: 0,
         dexterity: 2,
-        constitution: 0,
-        intelligence: 0,
-        wisdom: 0,
-        charisma: 0,
     ),
     traits:{
         "Lucky":
@@ -257,11 +228,6 @@ Race(
         SubRace(
             name: "Lightfoot Halfling",
             abilities:(
-                strength: 0,
-                dexterity: 0,
-                constitution: 0,
-                intelligence: 0,
-                wisdom: 0,
                 charisma: 1,
             ),
             traits:{
@@ -272,12 +238,7 @@ Race(
         SubRace(
             name: "Stout Halfling",
             abilities:(
-                strength: 0,
-                dexterity: 0,
                 constitution: 1,
-                intelligence: 0,
-                wisdom: 0,
-                charisma: 0,
             ),
             traits:{
                 "Stout Resilience":
@@ -293,11 +254,6 @@ Race(
     size: Medium,
     speed: 30,
     abilities:(
-        strength: 0,
-        dexterity: 0,
-        constitution: 0,
-        intelligence: 0,
-        wisdom: 0,
         charisma: 2,
     ),
     traits:{
@@ -320,11 +276,7 @@ Race(
     speed: 30,
     abilities:(
         strength: 2,
-        dexterity: 0,
         constitution: 1,
-        intelligence: 0,
-        wisdom: 0,
-        charisma: 0,
     ),
     traits:{
         "Darkvision":
@@ -362,11 +314,7 @@ Race(
     size: Medium,
     speed: 30,
     abilities:(
-        strength: 0,
-        dexterity: 0,
-        constitution: 0,
         intelligence: 1,
-        wisdom: 0,
         charisma: 2,
     ),
     traits:{

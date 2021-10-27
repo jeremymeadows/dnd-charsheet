@@ -4,11 +4,34 @@ use std::lazy::SyncLazy;
 use std::sync::Mutex;
 
 static RACES: SyncLazy<Mutex<Vec<Race>>> = SyncLazy::new(|| {
-    Mutex::new(
-        ron::from_str::<Vec<Race>>(&String::from_utf8_lossy(include_bytes!("SRD/races.ron")))
-            .unwrap(),
-    )
+    let mut races = ron::from_str::<Vec<Race>>(include_str!("SRD/races.ron")).unwrap();
+    races.join(ron::from_str::<Vec<Race>>(include_str!("homebrew/races.ron")).unwrap());
+
+    Mutex::new(races)
 });
+
+trait Joinable {
+    fn join(&mut self, other: Self);
+}
+
+impl Joinable for Vec<Race> {
+    fn join(&mut self, other: Self) {
+        for o in other {
+            match self.iter_mut().find(|s| s.name == o.name) {
+                Some(s) => {
+                    if s.subraces.is_some() && o.subraces.is_some() {
+                        for i in o.subraces.clone().unwrap() {
+                            s.subraces.as_mut().unwrap().push(i);
+                        }
+                    }
+                }
+                None => {
+                    self.push(o);
+                }
+            }
+        }
+    }
+}
 
 pub fn get_races() -> Vec<Race> {
     RACES.lock().unwrap().to_vec()
