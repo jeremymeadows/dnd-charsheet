@@ -109,7 +109,6 @@ impl Class {
         self.get_subclass(name)
             .unwrap_or_default()
             .features
-            .clone()
             .into_iter()
             .filter(|(k, _v)| *k <= level)
             .collect::<BTreeMap<u8, BTreeMap<String, String>>>()

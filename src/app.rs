@@ -2,6 +2,7 @@ use crate::character::{Ability, Character};
 use crate::compendium::{backgrounds, classes, races};
 use crate::pages;
 use eframe::{egui, epi};
+use std::fs;
 
 /// We derive Deserialize/Serialize so we can persist app state on shutdown.
 #[derive(serde::Deserialize, serde::Serialize)]
@@ -10,6 +11,8 @@ pub struct App {
     pub character: Character,
     #[serde(skip)]
     pub mode: Mode,
+    #[serde(skip)]
+    pub page: Page,
     #[serde(skip)]
     pub dirty: bool,
     #[serde(skip)]
@@ -21,9 +24,17 @@ pub enum Mode {
     Display,
     New,
     Edit,
-    Equipment,
     Save,
     Load,
+}
+
+#[derive(PartialEq, serde::Deserialize, serde::Serialize)]
+pub enum Page {
+    Home,
+    Equipment,
+    Actions,
+    Spells,
+    Other,
 }
 
 impl Default for App {
@@ -31,6 +42,7 @@ impl Default for App {
         Self {
             character: Character::default(),
             mode: Mode::Display,
+            page: Page::Home,
             dirty: false,
             tmp: Character::default(),
         }
@@ -42,15 +54,23 @@ impl epi::App for App {
         "D&D 5e Interactive Character Sheet"
     }
 
+    fn max_size_points(&self) -> egui::Vec2 {
+        egui::Vec2::new(f32::INFINITY, f32::INFINITY)
+    }
+
     /// Called once before the first frame.
     fn setup(
         &mut self,
-        _ctx: &egui::CtxRef,
+        ctx: &egui::CtxRef,
         _frame: &mut epi::Frame<'_>,
-        _storage: Option<&dyn epi::Storage>,
+        storage: Option<&dyn epi::Storage>,
     ) {
+        ctx.set_style(std::sync::Arc::new(
+            ron::from_str::<egui::Style>(include_str!("style.ron")).unwrap(),
+        ));
+
         // Load previous app state (if any).
-        if let Some(storage) = _storage {
+        if let Some(storage) = storage {
             *self = epi::get_value(storage, epi::APP_KEY).unwrap_or_default()
         }
     }
@@ -66,6 +86,7 @@ impl epi::App for App {
         let Self {
             character,
             mode,
+            page,
             dirty: _,
             tmp,
         } = self;
@@ -79,7 +100,7 @@ impl epi::App for App {
             // The top panel is often a good place for a menu bar:
             egui::menu::bar(ui, |ui| {
                 match *mode {
-                    Mode::Display | Mode::Equipment => {
+                    Mode::Display => {
                         if ui.button("New").clicked() {
                             *tmp = character.clone();
                             *character = Character::default();
@@ -101,9 +122,6 @@ impl epi::App for App {
                         }
                         if ui.button("Load").clicked() {
                             *mode = Mode::Load;
-                        }
-                        if ui.button("Equipment").clicked() {
-                            *mode = Mode::Equipment;
                         }
                         if character.level < 20 {
                             if ui.button("Level Up").clicked() {
@@ -131,11 +149,6 @@ impl epi::App for App {
                     Mode::Display => {
                         if ui.button("Quit").clicked() {
                             frame.quit();
-                        }
-                    }
-                    Mode::Equipment => {
-                        if ui.button("Done").clicked() {
-                            *mode = Mode::Display;
                         }
                     }
                     Mode::New | Mode::Edit => {
@@ -172,21 +185,39 @@ impl epi::App for App {
 
         character.assign_modifiers();
 
-        match self.mode {
-            Mode::Display => {
-                pages::display::show(self, ctx);
-            }
+        match mode {
+            Mode::Display => match page {
+                Page::Home => pages::home::show(self, ctx),
+                Page::Equipment => pages::equipment::show(self, ctx),
+                Page::Actions => pages::actions::show(self, ctx),
+                Page::Spells => pages::spells::show(self, ctx),
+                Page::Other => (),
+            },
             Mode::New | Mode::Edit => {
                 pages::edit::show(self, ctx);
             }
-            Mode::Equipment => {
-                pages::equipment::show(self, ctx);
-            }
             Mode::Save => {
-                unimplemented!();
+                #[cfg(not(target_arch = "wasm32"))]
+                fs::write(
+                    format!(
+                        "{}_the_{}_{}.charsheet",
+                        character.name, character.race.name, character.class.name),
+                        ron::to_string(&character).unwrap()
+                    ).expect("failed to write to disk");
             }
             Mode::Load => {
-                unimplemented!();
+                #[cfg(not(target_arch = "wasm32"))]
+                for d in fs::read_dir("./").unwrap() {
+                    let file = d.unwrap();
+                    if file.file_type().unwrap().is_file() {
+                        let filename = file.file_name().into_string().unwrap();
+                        if filename.ends_with(".charsheet") {
+                            *character = ron::from_str::<Character>(&fs::read_to_string(filename).unwrap()).unwrap();
+                            *mode = Mode::Display;
+                            break;
+                        }
+                    }
+                }
             }
         }
 

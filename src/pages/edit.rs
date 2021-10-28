@@ -7,8 +7,8 @@ pub fn show(app: &mut App, ctx: &egui::CtxRef) {
     let App {
         character,
         mode,
-        dirty: _,
         tmp,
+        ..
     } = app;
 
     egui::CentralPanel::default().show(ctx, |ui| {

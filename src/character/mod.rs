@@ -2,7 +2,7 @@ mod abilities;
 mod background;
 mod class;
 mod feats;
-mod items;
+mod item;
 mod proficiency;
 mod race;
 mod skills;
@@ -12,7 +12,7 @@ pub use abilities::{Abilities, Ability};
 pub use background::Background;
 pub use class::{Class, Saves, SubClass};
 pub use feats::Feat;
-pub use items::{ArmorType, EquipState, Item, ItemType};
+pub use item::{ArmorType, EquipState, Item, ItemType};
 pub use proficiency::Proficiency;
 pub use race::Race;
 pub use skills::{Skill, Skills};
@@ -96,8 +96,7 @@ impl Character {
             .items
             .iter()
             .filter(|i| {
-                matches!(i.item_type, ItemType::Armor(_))
-                    || matches!(i.item_type, ItemType::Shield) && i.equipped == EquipState::Equipped
+                matches!(i.item_type, ItemType::Armor(_)) && i.equipped == EquipState::Equipped
             })
             .map(|i| {
                 if let ItemType::Armor(a) = i.item_type {
@@ -108,7 +107,7 @@ impl Character {
                         ArmorType::Heavy => i.armor_class,
                     }
                 } else {
-                    2
+                    0
                 }
             })
             .max();

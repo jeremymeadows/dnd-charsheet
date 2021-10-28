@@ -7,9 +7,9 @@ fn main() {
     let app = dnd_charsheet::App::default();
     let options = eframe::NativeOptions {
         icon_data: Some(eframe::epi::IconData {
-            rgba: include_bytes!("../icon.bmp").to_vec(),
-            height: 334,
-            width: 334,
+            rgba: include_bytes!("../icon.rgba").to_vec(),
+            height: 256,
+            width: 256,
         }),
         initial_window_size: Some(eframe::egui::Vec2::new(970.0, 740.0)),
         ..Default::default()

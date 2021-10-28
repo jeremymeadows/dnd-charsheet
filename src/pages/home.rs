@@ -1,118 +1,126 @@
 use crate::character::{self, Ability, Skill};
-use crate::App;
+use crate::{App, Page};
 use eframe::egui;
 
 pub fn show_char_bar(app: &mut App, ctx: &egui::CtxRef) {
-    let App {
-        character,
-        mode: _,
-        dirty: _,
-        tmp: _,
-    } = app;
+    let App { character, .. } = app;
 
-    egui::TopBottomPanel::top("char").frame(egui::Frame{
-        margin: egui::Vec2 {x: 10.0, y: 4.0},
-        corner_radius: Default::default(),
-        shadow: Default::default(),
-        fill: egui::Color32::from_rgb(0x1b, 0x1b, 0x1b),
-        stroke: egui::Stroke::none(),
-    }).show(ctx, |ui| {
-        ui.horizontal(|ui| {
-            ui.vertical(|ui| {
-                ui.set_width(260.0);
-                ui.heading(&character.name);
-                ui.horizontal(|ui| {
-                    ui.label(&character.alignment);
-                    ui.label(&character.gender);
-                    ui.label(&character.race.name);
-                });
-                ui.horizontal(|ui| {
-                    ui.label(format!("{} {}", character.class.name, character.level));
-                    match character.spec.name.as_str() {
-                        "None" => {}
-                        s => {
-                            ui.label(format!("({})", s));
+    egui::TopBottomPanel::top("char")
+        .frame(egui::Frame {
+            margin: egui::Vec2 { x: 10.0, y: 4.0 },
+            corner_radius: Default::default(),
+            shadow: Default::default(),
+            fill: egui::Color32::from_rgb(0x1b, 0x1b, 0x1b),
+            stroke: egui::Stroke::none(),
+        })
+        .show(ctx, |ui| {
+            ui.horizontal(|ui| {
+                ui.set_height(80.0);
+                ui.vertical(|ui| {
+                    ui.set_width(260.0);
+                    ui.heading(&character.name);
+                    ui.horizontal(|ui| {
+                        ui.label(&character.alignment);
+                        ui.label(&character.gender);
+                        ui.label(&character.race.name);
+                    });
+                    ui.horizontal(|ui| {
+                        ui.label(format!("{} {}", character.class.name, character.level));
+                        match character.spec.name.as_str() {
+                            "None" => {}
+                            s => {
+                                ui.label(format!("({})", s));
+                            }
                         }
-                    }
+                    });
+                    ui.label(&character.background.name);
                 });
-                ui.label(&character.background.name);
-            });
-            ui.vertical(|ui| {
-                ui.horizontal(|ui| {
-                    ui.separator();
-                    ui.vertical(|ui| {
-                        ui.set_width(100.0);
-                        ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
-                            ui.label("Armor Class");
-                            ui.heading(character.ac().to_string());
-                        });
-                    });
-                    ui.vertical(|ui| {
-                        ui.set_width(100.0);
-                        ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
-                            ui.label("Initiative".to_string());
-                            ui.heading(character::mod_str(
-                                character.ability_mod(Ability::Dexterity),
-                            ));
-                        });
-                    });
-                    ui.vertical(|ui| {
-                        ui.set_width(100.0);
-                        ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
-                            ui.label("Speed".to_string());
-                            ui.heading(character.speed().to_string());
-                        });
-                    });
-                    ui.separator();
-                    ui.vertical(|ui| {
-                        ui.set_width(100.0);
-                        ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
-                            ui.label(format!("Hit Points ({})", character.max_hp));
-                            ui.heading(character.hp.to_string());
-                        });
-                    });
-                    ui.vertical(|ui| {
-                        ui.set_width(100.0);
-                        ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
-                            ui.label(format!("Hit Dice (d{})", character.class.hit_die));
-                            ui.heading(character.level.to_string());
-                        });
-                    });
-                    if let Some(a) = character.class.spellcaster {
+                ui.vertical(|ui| {
+                    ui.horizontal(|ui| {
+                        ui.separator();
                         ui.vertical(|ui| {
                             ui.set_width(100.0);
                             ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
-                                ui.label(format!("Spell DC ({})", a.to_string_short()));
-                                ui.heading(
-                                    (8 + character.ability_mod(a)
-                                        + character.proficiency_bonus() as i8)
-                                        .to_string(),
-                                );
+                                ui.label("Armor Class");
+                                ui.heading(character.ac().to_string());
                             });
                         });
-                    }
+                        ui.vertical(|ui| {
+                            ui.set_width(100.0);
+                            ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
+                                ui.label("Initiative".to_string());
+                                ui.heading(character::mod_str(
+                                    character.ability_mod(Ability::Dexterity),
+                                ));
+                            });
+                        });
+                        ui.vertical(|ui| {
+                            ui.set_width(100.0);
+                            ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
+                                ui.label("Speed".to_string());
+                                ui.heading(character.speed().to_string());
+                            });
+                        });
+                        ui.separator();
+                        ui.vertical(|ui| {
+                            ui.set_width(100.0);
+                            ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
+                                ui.label(format!("Hit Points ({})", character.max_hp));
+                                ui.heading(character.hp.to_string());
+                            });
+                        });
+                        ui.vertical(|ui| {
+                            ui.set_width(100.0);
+                            ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
+                                ui.label(format!("Hit Dice (d{})", character.class.hit_die));
+                                ui.heading(character.level.to_string());
+                            });
+                        });
+                        if let Some(a) = character.class.spellcaster {
+                            ui.vertical(|ui| {
+                                ui.set_width(100.0);
+                                ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
+                                    ui.label(format!("Spell DC ({})", a.to_string_short()));
+                                    ui.heading(
+                                        (8 + character.ability_mod(a)
+                                            + character.proficiency_bonus() as i8)
+                                            .to_string(),
+                                    );
+                                });
+                            });
+                        }
+                        ui.separator();
+                    });
                     ui.separator();
+                    ui.small("");
+                    ui.horizontal(|ui| {
+                        if ui.button("Home").clicked() {
+                            app.page = Page::Home;
+                        }
+                        if ui.button("Equipment").clicked() {
+                            app.page = Page::Equipment;
+                        }
+                        if ui.button("Actions").clicked() {
+                            app.page = Page::Actions;
+                        }
+                        if ui.button("Spells").clicked() {
+                            app.page = Page::Spells;
+                        }
+                    });
                 });
-                ui.separator();
             });
+            ui.separator();
         });
-        ui.separator();
-    });
 }
 
 pub fn show(app: &mut App, ctx: &egui::CtxRef) {
     show_char_bar(app, ctx);
 
-    let App {
-        character,
-        mode: _,
-        dirty: _,
-        tmp: _,
-    } = app;
+    let App { character, .. } = app;
 
     egui::CentralPanel::default().show(ctx, |ui| {
         ui.horizontal(|ui| {
-            ui.set_height(ctx.available_rect().bottom() - 130.0);
+            ui.set_height(ctx.available_rect().bottom() - 140.0);
             ui.vertical(|ui| {
                 ui.set_width(80.0);
                 let ab = |ability: Ability, ui: &mut egui::Ui| {

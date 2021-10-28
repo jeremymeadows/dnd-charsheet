@@ -10,17 +10,14 @@ fn main() {
 
     for r in _races.iter() {
         println!("{}", r.name);
-        match r.subraces.clone() {
-            Some(r) => {
-                for j in r {
-                    println!("  {}", j.name);
-                }
+        if let Some(r) = r.subraces.clone() {
+            for j in r {
+                println!("  {}", j.name);
             }
-            _ => {}
-        }
+        };
     }
 
-    println!("");
+    println!();
 
     for c in _classes.iter() {
         println!("{}", c.name);

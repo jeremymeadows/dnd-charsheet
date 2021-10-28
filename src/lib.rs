@@ -8,7 +8,7 @@ pub mod character;
 pub mod compendium;
 pub mod pages;
 
-pub use app::{App, Mode};
+pub use app::{App, Mode, Page};
 
 // When compiling for web:
 #[cfg(target_arch = "wasm32")]
