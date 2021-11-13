@@ -201,18 +201,23 @@ impl epi::App for App {
                 fs::write(
                     format!(
                         "{}_the_{}_{}.charsheet",
-                        character.name, character.race.name, character.class.name),
-                        ron::to_string(&character).unwrap()
-                    ).expect("failed to write to disk");
+                        character.name, character.race.name, character.class.name
+                    ),
+                    ron::to_string(&character).unwrap(),
+                )
+                .expect("failed to write to disk");
             }
-            Mode::Load => {
+            Mode::Load =>
+            {
                 #[cfg(not(target_arch = "wasm32"))]
                 for d in fs::read_dir("./").unwrap() {
                     let file = d.unwrap();
                     if file.file_type().unwrap().is_file() {
                         let filename = file.file_name().into_string().unwrap();
                         if filename.ends_with(".charsheet") {
-                            *character = ron::from_str::<Character>(&fs::read_to_string(filename).unwrap()).unwrap();
+                            *character =
+                                ron::from_str::<Character>(&fs::read_to_string(filename).unwrap())
+                                    .unwrap();
                             *mode = Mode::Display;
                             break;
                         }

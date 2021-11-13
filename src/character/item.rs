@@ -115,6 +115,17 @@ impl std::fmt::Display for Value {
     }
 }
 
+impl std::fmt::Display for DamageType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Bludgeoning => write!(f, "Bludgeoning"),
+            Self::Piercing => write!(f, "Piercing"),
+            Self::Slashing => write!(f, "Slashing"),
+            Self::None => write!(f, "None"),
+        }
+    }
+}
+
 impl EquipState {
     pub fn icon(&self) -> &str {
         match self {

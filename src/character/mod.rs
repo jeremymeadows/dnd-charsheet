@@ -12,7 +12,7 @@ pub use abilities::{Abilities, Ability};
 pub use background::Background;
 pub use class::{Class, Saves, SubClass};
 pub use feats::Feat;
-pub use item::{ArmorType, EquipState, Item, ItemType};
+pub use item::{ArmorType, DamageType, EquipState, Item, ItemType, WeaponProperties, WeaponType};
 pub use proficiency::Proficiency;
 pub use race::Race;
 pub use skills::{Skill, Skills};
@@ -65,7 +65,7 @@ impl Character {
         (self.level - 1) / 4 + 2
     }
 
-    fn get_modifiers(&self, pattern: &str) -> Vec<(String, String)> {
+    pub fn get_modifiers(&self, pattern: &str) -> Vec<(String, String)> {
         let mut modifiers = self.race.get_modifiers(|k, _v| k.starts_with(pattern));
         modifiers.append(
             &mut self

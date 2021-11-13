@@ -19,7 +19,9 @@ pub fn show(app: &mut App, ctx: &egui::CtxRef) {
                 egui::containers::ScrollArea::auto_sized()
                     .id_source("prep_spells")
                     .show(ui, |ui| {
-                        ui.label("todo");
+                        for s in character.get_modifiers(".spells").iter().filter(|e| e.0 != ".spellcasting") {
+                            ui.label(s.1.clone());
+                        }
                     });
             });
 
