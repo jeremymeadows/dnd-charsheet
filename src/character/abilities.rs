@@ -34,14 +34,14 @@ impl Abilities {
 
 impl std::fmt::Display for Ability {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        match self {
-            Ability::Strength => write!(f, "Strength"),
-            Ability::Dexterity => write!(f, "Dexterity"),
-            Ability::Constitution => write!(f, "Constitution"),
-            Ability::Intelligence => write!(f, "Intelligence"),
-            Ability::Wisdom => write!(f, "Wisdom"),
-            Ability::Charisma => write!(f, "Charisma"),
-        }
+        write!(f, "{}", match self {
+            Ability::Strength => "Strength",
+            Ability::Dexterity => "Dexterity",
+            Ability::Constitution => "Constitution",
+            Ability::Intelligence => "Intelligence",
+            Ability::Wisdom => "Wisdom",
+            Ability::Charisma => "Charisma",
+        })
     }
 }
 
@@ -63,12 +63,12 @@ impl std::ops::Add for Abilities {
 impl Ability {
     pub fn to_string_short(&self) -> String {
         match self {
-            Ability::Strength => "STR".to_string(),
-            Ability::Dexterity => "DEX".to_string(),
-            Ability::Constitution => "CON".to_string(),
-            Ability::Intelligence => "INT".to_string(),
-            Ability::Wisdom => "WIS".to_string(),
-            Ability::Charisma => "CHA".to_string(),
-        }
+            Ability::Strength => "STR",
+            Ability::Dexterity => "DEX",
+            Ability::Constitution => "CON",
+            Ability::Intelligence => "INT",
+            Ability::Wisdom => "WIS",
+            Ability::Charisma => "CHA",
+        }.to_string()
     }
 }

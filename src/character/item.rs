@@ -15,8 +15,15 @@ pub enum ItemType {
     Armor(ArmorType),
     Shield,
     Weapon(WeaponType),
+    Ammunition,
     Tool,
+    Gear,
     Container,
+    Ring,
+    Wand,
+    Potion,
+    Wondrous,
+    Scroll,
     Other,
 }
 
@@ -67,6 +74,15 @@ pub enum EquipState {
     Equipped,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, serde::Deserialize, serde::Serialize)]
+pub enum Rarity {
+    Common,
+    Uncommon,
+    Rare,
+    VeryRare,
+    Legendary,
+}
+
 #[derive(Default, Clone, Debug, serde::Deserialize, serde::Serialize)]
 #[serde(default)]
 pub struct Item {
@@ -79,7 +95,9 @@ pub struct Item {
     pub damage_die: u8,
     pub range: String,
     pub equipped: EquipState,
-    pub rarity: u32,
+    pub magic: bool,
+    pub rarity: Rarity,
+    pub attunement: bool,
     pub properties: Vec<WeaponProperties>,
     pub required_proficiencies: Vec<String>,
     pub traits: BTreeMap<String, String>,
@@ -103,26 +121,32 @@ impl Default for EquipState {
     }
 }
 
+impl Default for Rarity {
+    fn default() -> Self {
+        Rarity::Common
+    }
+}
+
 impl std::fmt::Display for Value {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Value::Copper(x) => write!(f, "{} cp", x),
-            Value::Silver(x) => write!(f, "{} sp", x),
-            Value::Electrum(x) => write!(f, "{} ep", x),
-            Value::Gold(x) => write!(f, "{} gp", x),
-            Value::Platinum(x) => write!(f, "{} pp", x),
-        }
+        write!(f, "{}", match self {
+            Self::Copper(x) => format!("{} cp", x),
+            Self::Silver(x) => format!("{} sp", x),
+            Self::Electrum(x) => format!("{} ep", x),
+            Self::Gold(x) => format!("{} gp", x),
+            Self::Platinum(x) => format!("{} pp", x),
+        })
     }
 }
 
 impl std::fmt::Display for DamageType {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::Bludgeoning => write!(f, "Bludgeoning"),
-            Self::Piercing => write!(f, "Piercing"),
-            Self::Slashing => write!(f, "Slashing"),
-            Self::None => write!(f, "None"),
-        }
+        write!(f, "{}", match self {
+            Self::Bludgeoning => "Bludgeoning",
+            Self::Piercing => "Piercing",
+            Self::Slashing => "Slashing",
+            Self::None => "None",
+        })
     }
 }
 

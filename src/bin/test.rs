@@ -1,5 +1,6 @@
-use dnd_charsheet::compendium::{backgrounds, classes, feats, items, races, spells};
+use dnd_charsheet::compendium::*;
 
+// runs each RON file through its parser to validate it
 fn main() {
     let _races = races::get_races();
     let _classes = classes::get_classes();
